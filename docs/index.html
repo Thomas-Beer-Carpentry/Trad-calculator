@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#17252c">
+  <meta name="description" content="Equal gaps. Running tape marks. A simple offline layout calculator for the job site.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Trade Layout Calculator</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2317252c'/%3E%3Cpath d='M6 11h20v11H6z' fill='%23f2c94c'/%3E%3Cpath d='M10 11v6m6-6v4m6-4v6' stroke='%2317252c' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./style.css">
+  <script defer src="./app.bundle.js"></script>
+</head>
+<body>
+  <main class="calculator">
+    <header>
+      <div class="brand"><svg aria-hidden="true" viewBox="0 0 32 32"><rect x="3" y="7" width="26" height="18" rx="2" fill="currentColor"/><path d="M9 7v9m7-9v6m7-6v9" stroke="#17252c" stroke-width="2"/></svg><h1>Trade Layout<span>CALCULATOR</span></h1></div>
+      <button id="install" class="install" type="button" aria-label="Install app" title="Install app"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M5 16v5h14v-5"/></svg></button>
+    </header>
+
+    <form id="layout-form" novalidate autocomplete="off">
+      <div class="field length-field">
+        <label for="length">Overall length</label>
+        <div class="measurement overall"><input id="length" name="length" inputmode="decimal" autocomplete="off" aria-describedby="length-unit"><span id="length-unit">mm</span></div>
+      </div>
+
+      <div class="layout-row">
+        <div class="field"><label for="method">Layout by</label><div class="select-wrap"><select id="method" name="method"><option value="count">How many marks</option><option value="maximum">Maximum spacing</option></select><svg aria-hidden="true" viewBox="0 0 16 16"><path d="m4 6 4 4 4-4"/></svg></div></div>
+        <div class="field value-field"><label id="amount-label" for="amount">Marks</label><div class="measurement"><input id="amount" name="amount" inputmode="numeric" autocomplete="off"><span id="amount-unit" hidden>mm</span></div></div>
+      </div>
+
+      <fieldset><legend>Material</legend><div class="segmented"><label><input type="radio" name="material" value="none" checked><span>No material</span></label><label><input type="radio" name="material" value="include"><span>Include material</span></label></div></fieldset>
+
+      <div id="material-fields" hidden>
+        <div class="field width-field"><label for="width">Board width</label><div class="measurement"><input id="width" name="width" inputmode="decimal" autocomplete="off" aria-describedby="width-unit"><span id="width-unit">mm</span></div></div>
+        <fieldset><legend>Mark</legend><div class="segmented cross"><label><input type="radio" name="cross" value="before"><span><b class="mark-symbol">X│<i>→</i></b>Cross Before</span></label><label><input type="radio" name="cross" value="away" checked><span><b class="mark-symbol">│X<i>→</i></b>Cross Away</span></label></div></fieldset>
+      </div>
+
+      <fieldset><legend>Ending</legend><div class="segmented"><label><input type="radio" name="ending" value="more" checked><span>One more space</span></label><label><input type="radio" name="ending" value="same"><span>Same number</span></label></div></fieldset>
+      <p id="error" role="alert" hidden></p>
+      <button id="calculate-button" class="calculate" type="button">Calculate<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 5h14v14H5zM8 9h8m-8 4h2m4 0h2m-8 3h2m4 0h2"/></svg></button>
+    </form>
+
+    <section id="results" aria-label="Layout results" aria-live="polite" hidden>
+      <div class="result-heading"><div><span class="gap-label">CLEAR GAP</span><div class="gap-value"><span id="gap"></span><small>mm</small></div></div><div id="result-count" class="result-count"></div></div>
+      <div class="tape">
+        <div class="tape-heading"><span id="tape-label">RUNNING MARKS · mm</span><span class="measure-direction">Measure <svg aria-hidden="true" viewBox="0 0 32 12"><path d="M1 6h28m-5-4 5 4-5 4"/></svg></span></div>
+        <div id="diagram" tabindex="0" role="region" aria-label="Running tape marks. Scroll left or right for all measurements." aria-live="off"></div>
+        <div class="tape-footer"><span id="start-label"></span><span id="end-label"></span></div>
+      </div>
+      <div class="result-footer"><span id="result-note">All marks from the start</span><span id="scroll-hint" hidden>Swipe for all marks</span></div>
+    </section>
+    <noscript><p class="script-notice">Open this downloaded file in a web browser to use the calculator.</p></noscript>
+    <p id="ready" class="ready" role="status" hidden>Ready to use offline</p>
+  </main>
+  <dialog id="install-dialog"><form method="dialog"><div class="dialog-heading"><h2>Keep it on your phone</h2><button aria-label="Close" class="close">×</button></div><p id="install-instructions">On Android, open this page in Chrome. Tap the three-dot menu, then Add to Home screen and Install. On iPhone, use Safari, tap Share, then Add to Home Screen.</p><p id="offline-instructions">Keep this page open online once until “Ready to use offline” appears. Then open it from your home screen on site.</p><button id="full-screen" class="calculate" type="button" hidden>Open full screen</button><button class="calculate">Got it</button></form></dialog>
+</body>
+</html>
